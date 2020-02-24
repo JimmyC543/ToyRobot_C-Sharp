@@ -14,7 +14,11 @@ namespace ToyRobotLibrary.Robot
 		//	public IPosition GetPosition();
 		//	public IOrientation GetOrientation();
 		//	private Orientation _orientation; //TODO: Generalise this; IOrientation would be ideal to better handle more general directions. Also, make nullable!
-		public void Rotate(int rotationDirection);
-		public void Move();
+
+		//private bool ValidateMovement();
+
+		//I'm not sure what the IReport would contain, but It makes sense to have some method which returns the appropriate info.
+		public IReport Report();
+		public void Place(Position position, Orientation orientation);
 	}
 }
