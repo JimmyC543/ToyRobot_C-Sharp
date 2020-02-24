@@ -17,7 +17,7 @@ namespace ToyRobotLibrary.Robot
 
 		//private bool ValidateMovement();
 
-		//I'm not sure what the IReport would contain, but It makes sense to have some method which returns the appropriate info.
+		//It might make sense to add an IReportable interface...
 		public IReport Report();
 	}
 }
