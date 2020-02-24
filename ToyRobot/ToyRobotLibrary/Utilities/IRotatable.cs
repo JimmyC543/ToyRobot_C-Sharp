@@ -9,6 +9,6 @@ namespace ToyRobotLibrary.Utilities
     /// </summary>
     public interface IRotatable
     {
-        public void Rotate(int rotationDirection);
+        public void Rotate(SpinDirection rotationDirection);
     }
 }
