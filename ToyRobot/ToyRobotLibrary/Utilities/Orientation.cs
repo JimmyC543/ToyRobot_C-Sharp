@@ -5,13 +5,13 @@ using System.Text;
 namespace ToyRobotLibrary.Utilities
 {
 	/// <summary>
-	/// Set the possible directions the ToyRobot can face.
+	/// Set the possible orientations the ToyRobot can face.
 	/// </summary>
-	public enum Direction
+	public enum Orientation
 	{
-		North,	//0
-		East,	//1
-		South,	//2
-		West	//3
+		North,  //0
+		East,   //1
+		South,  //2
+		West    //3
 	}
 }
