@@ -8,7 +8,7 @@ namespace ToyRobotLibrary.Robot
 	/// <summary>
 	/// The interface for any robots our app may deal with.
 	/// </summary>
-	public interface IRobot : IRotatable, IMobile
+	public interface IRobot : IRotatable, IMobile, IPlaceableOrientable
 	{
 		public IRobot Robot();
 		//	public IPosition GetPosition();
@@ -19,6 +19,5 @@ namespace ToyRobotLibrary.Robot
 
 		//I'm not sure what the IReport would contain, but It makes sense to have some method which returns the appropriate info.
 		public IReport Report();
-		public void Place(Position position, Orientation orientation);
 	}
 }
