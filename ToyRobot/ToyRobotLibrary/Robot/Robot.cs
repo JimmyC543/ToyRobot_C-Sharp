@@ -9,7 +9,8 @@ namespace ToyRobotLibrary.Robot
     public class Robot : IRobot
     {
         private readonly ITable _table;
-
+        private Position _position;
+        private Orientation? _orientation;
         /// <summary>
         /// The Robot which we're going to be playing with.
         /// </summary>
@@ -26,10 +27,13 @@ namespace ToyRobotLibrary.Robot
         {
             throw new NotImplementedException();
         }
-
         public void Place(Position position, Orientation orientation)
         {
-            throw new NotImplementedException();
+            if (_table.IsValidPosition(position) && Enum.IsDefined(typeof(Orientation), orientation))
+            {
+                _position = position;
+                _orientation = orientation;
+            }
         }
 
         public IReport Report()
