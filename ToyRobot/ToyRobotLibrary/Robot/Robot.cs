@@ -45,7 +45,10 @@ namespace ToyRobotLibrary.Robot
         {
             if(_position != null)//I.e.if the robot has been placed on a table
             {
-                _orientation = (Orientation)(((int)_orientation.Value + (int)rotationDirection + Enum.GetValues(typeof(Orientation)).Length) % Enum.GetValues(typeof(Orientation)).Length);
+                //Futures: If any more orientations are added e.g. North-East,
+                //"Enum.GetValues(typeof(Orientation)).Length" will give the number of options.
+                int numOrientations = 4;
+                _orientation = (Orientation)(((int)_orientation.Value + (int)rotationDirection + numOrientations) % numOrientations);
             }
         }
 
