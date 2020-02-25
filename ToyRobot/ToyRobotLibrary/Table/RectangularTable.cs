@@ -27,6 +27,11 @@ namespace ToyRobotLibrary.Table
 			this._numCols = numCols;
 		}
 
+		/// <summary>
+		/// Check the validity of the given position coordinates.
+		/// </summary>
+		/// <param name="position">The coordinates to check for validity</param>
+		/// <returns>true if coordinates are within the bounds of the table, false if any of the coordinates fall outside of the table's border.</returns>
 		public bool IsValidPosition(Position position)
 		{
 			if (position.x < 0 || position.x >= this._numCols)
