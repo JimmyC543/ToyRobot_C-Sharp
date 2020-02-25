@@ -10,7 +10,6 @@ namespace ToyRobotLibrary.Robot
 	/// </summary>
 	public interface IRobot : IRotatable, IMobile, IPlaceableOrientable
 	{
-		public IRobot Robot();
 		//	public IPosition GetPosition();
 		//	public IOrientation GetOrientation();
 		//	private Orientation _orientation; //TODO: Generalise this; IOrientation would be ideal to better handle more general directions. Also, make nullable!
