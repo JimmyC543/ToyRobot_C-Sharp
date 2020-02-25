@@ -36,7 +36,8 @@ namespace ToyRobotLibraryTests.Table
             ITable table;
             Exception ex = Record.Exception(() => table = new RectangularTable(width, length));
             Assert.NotNull(ex);
-            Assert.IsType<ArgumentNullException>(ex);
+            Assert.IsType<ArgumentException>(ex);
+            Assert.Equal("Table sides must be greater than 0.", ex.Message);
         }
         #endregion
 
