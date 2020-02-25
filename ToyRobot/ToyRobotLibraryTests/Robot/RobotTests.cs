@@ -28,7 +28,7 @@ namespace ToyRobotLibraryTests.Robot
             Exception ex = Record.Exception(() => robot = new ToyRobotLibrary.Robot.Robot(null));
             Assert.NotNull(ex);
             Assert.IsType<ArgumentNullException>(ex);
-            Assert.Equal("Can't use a robot without a table instance.", ex.Message);
+            Assert.Contains("Can't use a robot without a table instance.", ex.Message);
         }
 
         #endregion
