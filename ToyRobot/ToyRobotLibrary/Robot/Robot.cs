@@ -43,7 +43,10 @@ namespace ToyRobotLibrary.Robot
 
         public void Rotate(SpinDirection rotationDirection)
         {
-            throw new NotImplementedException();
+            if(_position != null)//I.e.if the robot has been placed on a table
+            {
+                _orientation = (Orientation)(((int)_orientation.Value + (int)rotationDirection + Enum.GetValues(typeof(Orientation)).Length) % Enum.GetValues(typeof(Orientation)).Length);
+            }
         }
 
     }
