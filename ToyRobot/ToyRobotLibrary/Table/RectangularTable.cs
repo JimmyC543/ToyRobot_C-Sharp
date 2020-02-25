@@ -22,14 +22,24 @@ namespace ToyRobotLibrary.Table
 		public RectangularTable(int numRows, int numCols)
 		{
 			if (numRows <= 0 || numCols <= 0)
-				throw new ArgumentException();
+				throw new ArgumentException("Table sides must be greater than 0.");
 			this._numRows = numRows;
 			this._numCols = numCols;
 		}
 
 		public bool IsValidPosition(Position position)
 		{
-			throw new NotImplementedException();
+			if (position.x < 0 || position.x >= this._numCols)
+			{
+				return false;
+			}
+
+			if (position.y < 0 || position.y >= this._numRows)
+			{
+				return false;
+			}
+
+			return true;
 		}
 	}
 }
