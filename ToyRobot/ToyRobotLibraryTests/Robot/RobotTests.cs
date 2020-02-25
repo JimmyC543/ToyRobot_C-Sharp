@@ -117,6 +117,51 @@ namespace ToyRobotLibraryTests.Robot
         }
         #endregion
 
+        #region Rotate tests
 
+        [Theory]
+        [InlineData(0, 1, 1)]
+        [InlineData(1, 1, 2)]
+        [InlineData(2, 1, 3)]
+        [InlineData(3, 1, 0)]
+        [InlineData(0, -1, 3)]
+        [InlineData(3, -1, 2)]
+        [InlineData(2, -1, 1)]
+        [InlineData(1, -1, 0)]
+        public void Rotate_ShouldSucceed_WithSingleSpin(int startingOrientation, int spin, int expectedOrientation)
+        {
+            //Arrange
+            var mockTable = new Mock<RectangularTable>(1, 1);
+            IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
+            var positionField = robot.GetType().GetField("_position", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var orientationField = robot.GetType().GetField("_orientation", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+            positionField.SetValue(robot, new Position { x = 0, y = 0 });
+            orientationField.SetValue(robot, (Orientation)startingOrientation);
+
+            //Act
+            robot.Rotate((SpinDirection)spin);
+
+            //Assert
+            Assert.Equal((Orientation)expectedOrientation, orientationField.GetValue(robot));
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(-1)]
+        public void Rotate_ShouldDoNothingBeforeRobotIsPlaced(int spin)
+        {
+            //Arrange
+            var mockTable = new Mock<RectangularTable>(1, 1);
+            IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
+            var orientationField = robot.GetType().GetField("_orientation", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+            //Act
+            robot.Rotate((SpinDirection)spin);
+
+            //Assert
+            Assert.Null(orientationField.GetValue(robot));
+        }
+        #endregion
     }
 }
