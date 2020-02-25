@@ -1,3 +1,5 @@
 ToyRobot/ToyRobotLibrary/obj/*
 ToyRobot/.vs/*
 ToyRobot/ToyRobotLibraryTests/obj/*
+ToyRobot/ToyRobotLibrary/bin/*
+ToyRobot/ToyRobotLibraryTests/bin/*
