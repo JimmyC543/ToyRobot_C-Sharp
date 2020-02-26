@@ -25,7 +25,31 @@ namespace ToyRobotLibrary.Robot
 
         public void Move()
         {
-            throw new NotImplementedException();
+            if (_position == null || _orientation == null) return; //If the robot hasn't been placed, the Move command should do nothing.
+
+            //TODO: This feels a little funny. Consider refactoring later.
+            Position updatedPosition = new Position(_position);
+
+            switch (_orientation)
+            {
+                case Orientation.North:
+                    updatedPosition.y++;
+                    break;
+                case Orientation.East:
+                    updatedPosition.x++;
+                    break;
+                case Orientation.South:
+                    updatedPosition.y--;
+                    break;
+                case Orientation.West:
+                    updatedPosition.x--;
+                    break;
+            }
+
+            if (_table.IsValidPosition(updatedPosition))
+            {
+                _position = updatedPosition;
+            }
         }
         public void Place(Position position, Orientation orientation)
         {

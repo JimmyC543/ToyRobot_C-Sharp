@@ -12,6 +12,19 @@ namespace ToyRobotLibrary.Utilities
     /// </summary>
     public class Position
     {
+        //TODO: Having all these constructors and public fields feels a little dirty. Come back and refactor later!
+        public Position() { }
+        public Position(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+        public Position(Position position)
+        {
+            x = position.x;
+            y = position.y;
+        }
+
         public int x;
         public int y;
     }
