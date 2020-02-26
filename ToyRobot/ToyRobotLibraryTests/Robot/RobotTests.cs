@@ -283,7 +283,9 @@ namespace ToyRobotLibraryTests.Robot
             var mockTable = new Mock<RectangularTable>(5, 5);
             IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
             var positionField = robot.GetType().GetField("_position", BindingFlags.NonPublic | BindingFlags.Instance);
+            var isPlacedProperty = robot.GetType().GetProperty("IsPlaced", BindingFlags.Public | BindingFlags.Instance);
             positionField.SetValue(robot, new Position(x, y));
+            isPlacedProperty.SetValue(robot, true);
 
             //Act
             var result = robot.GetPosition();
@@ -322,7 +324,9 @@ namespace ToyRobotLibraryTests.Robot
             var mockTable = new Mock<RectangularTable>(5, 5);
             IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
             var orientationField = robot.GetType().GetField("_orientation", BindingFlags.NonPublic | BindingFlags.Instance);
+            var isPlacedProperty = robot.GetType().GetProperty("IsPlaced", BindingFlags.Public | BindingFlags.Instance);
             orientationField.SetValue(robot, orientation);
+            isPlacedProperty.SetValue(robot, true);
 
             //Act
             var result = robot.GetOrientation();

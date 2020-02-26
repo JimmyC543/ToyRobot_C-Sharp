@@ -28,12 +28,12 @@ namespace ToyRobotLibrary.Robot
 
         public Orientation? GetOrientation()
         {
-            throw new NotImplementedException();
+            return IsPlaced ? _orientation : null; //TODO: Better to return null, or to throw exception to be handled elsewhere?
         }
 
         public Position GetPosition()
         {
-            throw new NotImplementedException();
+            return IsPlaced ? _position : null; //TODO: Better to return null, or to throw exception to be handled elsewhere?
         }
 
         public void Move()
