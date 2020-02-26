@@ -18,7 +18,17 @@ namespace ToyRobotLibrary.RobotOperator
 
 		public void InterpretInstruction(Instruction instruction, object[] args)
 		{
-            throw new NotImplementedException();
+			switch (instruction)
+			{
+				case Instruction.PLACE:
+				case Instruction.MOVE:
+				case Instruction.LEFT:
+				case Instruction.RIGHT:
+				case Instruction.REPORT:
+					throw new NotImplementedException();
+				default:
+					return;
+			}
 		}
 	}
 }
