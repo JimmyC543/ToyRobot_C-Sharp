@@ -99,5 +99,81 @@ namespace ToyRobotLibraryTests.RobotOperator
         }
         #endregion
 
+        #region InterpretInstruction tests - LEFT
+        [Fact]
+        public void InterpretInstruction_LEFT_ShouldBeCalled_WhenRobotIsPlaced()
+        {
+            //Arrange
+            Instruction instruction = Instruction.LEFT;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(true);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+
+            //Act
+            robotOperator.InterpretInstruction(instruction);
+
+            //Assert
+            mockRobot.Verify(robot => robot.IsPlaced, Times.Once());
+            mockRobot.Verify(robot => robot.Rotate(SpinDirection.Left), Times.Once());
+
+        }
+        [Fact]
+        public void InterpretInstruction_LEFT_ShouldNotBeCalled_WhenRobotIsNotPlaced()
+        {
+            //Arrange
+            Instruction instruction = Instruction.LEFT;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(false);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+
+            //Act
+            robotOperator.InterpretInstruction(instruction);
+
+            //Assert
+            mockRobot.Verify(robot => robot.IsPlaced, Times.Once());
+            mockRobot.Verify(robot => robot.Rotate(It.IsAny<SpinDirection>()), Times.Never());
+        }
+        #endregion
+
+        #region InterpretInstruction tests - RIGHT
+        [Fact]
+        public void InterpretInstruction_RIGHT_ShouldBeCalled_WhenRobotIsPlaced()
+        {
+            //Arrange
+            Instruction instruction = Instruction.RIGHT;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(true);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+
+            //Act
+            robotOperator.InterpretInstruction(instruction);
+
+            //Assert
+            mockRobot.Verify(robot => robot.IsPlaced, Times.Once());
+            mockRobot.Verify(robot => robot.Rotate(SpinDirection.Right), Times.Once());
+
+        }
+        [Fact]
+        public void InterpretInstruction_RIGHT_ShouldNotBeCalled_WhenRobotIsNotPlaced()
+        {
+            //Arrange
+            Instruction instruction = Instruction.RIGHT;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(false);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+
+            //Act
+            robotOperator.InterpretInstruction(instruction);
+
+            //Assert
+            mockRobot.Verify(robot => robot.IsPlaced, Times.Once());
+            mockRobot.Verify(robot => robot.Rotate(It.IsAny<SpinDirection>()), Times.Never());
+        }
+        #endregion
+
     }
 }

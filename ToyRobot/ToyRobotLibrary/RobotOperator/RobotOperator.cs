@@ -26,9 +26,19 @@ namespace ToyRobotLibrary.RobotOperator
 						_robot.Move();
 					}
 					break;
-				case Instruction.PLACE:
 				case Instruction.LEFT:
+					if (_robot.IsPlaced)
+					{
+						_robot.Rotate(SpinDirection.Left);
+					}
+					break;
 				case Instruction.RIGHT:
+					if (_robot.IsPlaced)
+					{
+						_robot.Rotate(SpinDirection.Right);
+					}
+					break;
+				case Instruction.PLACE:
 				case Instruction.REPORT:
 					throw new NotImplementedException();
 				default:
