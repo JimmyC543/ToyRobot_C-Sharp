@@ -175,5 +175,104 @@ namespace ToyRobotLibraryTests.RobotOperator
         }
         #endregion
 
+        #region InterpretInstruction tests - REPORT
+        [Fact]
+        public void InterpretInstruction_REPORT_ShouldBeCalled_WhenRobotIsPlaced()
+        {
+            //Arrange
+            Instruction instruction = Instruction.REPORT;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.GetOrientation()).Returns(Orientation.North);
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(true);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+
+            //Act
+            robotOperator.InterpretInstruction(instruction);
+
+            //Assert
+            mockRobot.Verify(robot => robot.IsPlaced, Times.Once());
+            mockRobot.Verify(robot => robot.GetPosition(), Times.Once());
+            mockRobot.Verify(robot => robot.GetOrientation(), Times.Once());
+            mockReporter.Verify(reporter => reporter.Report(It.IsAny<Position>(), It.IsAny<Orientation>()), Times.Once());
+        }
+        [Fact]
+        public void InterpretInstruction_REPORT_ShouldNotBeCalled_WhenRobotIsNotPlaced()
+        {
+            //Arrange
+            Instruction instruction = Instruction.RIGHT;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(false);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+
+            //Act
+            robotOperator.InterpretInstruction(instruction);
+
+            //Assert
+            mockRobot.Verify(robot => robot.Rotate(SpinDirection.Right), Times.Never());
+        }
+        #endregion
+
+
+        #region InterpretInstruction tests - PLACE
+
+        [Theory]
+        [InlineData(0, 0, Orientation.North)]
+        [InlineData(2, 3, Orientation.East)]
+        [InlineData(-1, -1, Orientation.East)]//Even invalid Positions work
+        [InlineData(-1, -1, (Orientation)7)]//Even invalid Orientations work
+        public void InterpretInstruction_Place_ShouldBeCalled_WithCorrectNumberOfArgs(int x, int y, Orientation orientation)
+        {
+            //Arrange
+            Instruction instruction = Instruction.PLACE;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(true);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+            string orientationString = orientation.ToString();
+            //Act
+            robotOperator.InterpretInstruction(instruction, new object[] { x, y, orientation.ToString() });
+
+            //Assert
+            mockRobot.Verify(robot => robot.Place(It.IsAny<Position>(), orientation), Times.Once());
+        }
+
+        [Fact]
+        public void InterpretInstruction_Place_ThrowsException_WithNoArgs()
+        {
+            //Arrange
+            Instruction instruction = Instruction.PLACE;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(true);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+            //Act
+            Exception ex = Record.Exception(() => robotOperator.InterpretInstruction(instruction));
+
+            //Assert
+            Assert.NotNull(ex);
+            Assert.IsType<ArgumentNullException>(ex);
+            Assert.Contains("Place command requires 3 arguments.", ex.Message);
+        }
+
+        [Fact]
+        public void InterpretInstruction_Place_ThrowsException_WithIncorrectNumberOfArgs()
+        {
+            //Arrange
+            Instruction instruction = Instruction.PLACE;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(true);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+            //Act
+            Exception ex = Record.Exception(() => robotOperator.InterpretInstruction(instruction, new object[] { "Just the one argument here, buddy." }));
+
+            //Assert
+            Assert.NotNull(ex);
+            Assert.IsType<ArgumentException>(ex);
+            Assert.Contains("Expected 3 arguments; instead received 1", ex.Message);
+        }
+        #endregion
     }
 }

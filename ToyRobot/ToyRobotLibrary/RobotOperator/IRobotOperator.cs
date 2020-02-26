@@ -7,6 +7,6 @@ namespace ToyRobotLibrary.RobotOperator
 {
     public interface IRobotOperator
     {
-        public void InterpretInstruction(Instruction instruction, object[] args);
+        public void InterpretInstruction(Instruction instruction, object[] args = null);
     }
 }
