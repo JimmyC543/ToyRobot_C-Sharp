@@ -238,7 +238,10 @@ namespace ToyRobotLibraryTests.Robot
 
             //Assert
             Assert.Equal((Orientation)orientation, orientationField.GetValue(robot));
-            Assert.Equal(initialPosition, positionField.GetValue(robot));
+            Assert.NotNull(positionField.GetValue(robot));
+            Assert.IsType<Position>(positionField.GetValue(robot));
+            Assert.Equal(initX, (positionField.GetValue(robot) as Position).x);
+            Assert.Equal(initY, (positionField.GetValue(robot) as Position).y);
         }
 
         [Fact]
