@@ -20,8 +20,13 @@ namespace ToyRobotLibrary.RobotOperator
 		{
 			switch (instruction)
 			{
-				case Instruction.PLACE:
 				case Instruction.MOVE:
+					if (_robot.IsPlaced)
+					{
+						_robot.Move();
+					}
+					break;
+				case Instruction.PLACE:
 				case Instruction.LEFT:
 				case Instruction.RIGHT:
 				case Instruction.REPORT:

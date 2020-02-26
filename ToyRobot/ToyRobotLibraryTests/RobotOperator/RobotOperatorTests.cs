@@ -61,5 +61,43 @@ namespace ToyRobotLibraryTests.RobotOperator
             Assert.Contains("Must provide or inject object implementing IReporter", ex.Message);
         }
         #endregion
+
+
+        #region InterpretInstruction tests - MOVE
+        [Fact]
+        public void InterpretInstruction_MOVE_ShouldBeCalled_WhenRobotIsPlaced()
+        {
+            //Arrange
+            Instruction instruction = Instruction.MOVE;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(true);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+
+            //Act
+            robotOperator.InterpretInstruction(instruction);
+
+            //Assert
+            mockRobot.Verify(robot => robot.Move(), Times.Once());
+
+        }
+        [Fact]
+        public void InterpretInstruction_MOVE_ShouldNotBeCalled_WhenRobotIsNotPlaced()
+        {
+            //Arrange
+            Instruction instruction = Instruction.MOVE;
+            Mock<IRobot> mockRobot = new Mock<IRobot>();
+            mockRobot.Setup(robot => robot.IsPlaced).Returns(false);
+            Mock<IReporter> mockReporter = new Mock<IReporter>();
+            IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
+
+            //Act
+            robotOperator.InterpretInstruction(instruction);
+
+            //Assert
+            mockRobot.Verify(robot => robot.Move(), Times.Never());
+        }
+        #endregion
+
     }
 }
