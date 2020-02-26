@@ -10,6 +10,7 @@ namespace ToyRobotLibrary.Utilities
     public interface IPlaceableSansOrientation
     {
         public void Place(Position position);
+        public bool IsPlaced { get; }//TODO: Perhaps add another small interface to remove duplication between here and IPlaceableOrientable
     }
     /// <summary>
     /// To be used by our ToyRobot
@@ -17,5 +18,9 @@ namespace ToyRobotLibrary.Utilities
     public interface IPlaceableOrientable
     {
         public void Place(Position position, Orientation orientation);
+
+        //It's conceivable that in the future we might want to remove/re-place the robot onto a different table.
+        //With a publically accessible property it makes it easer to determine the state of the robot.
+        public bool IsPlaced { get; }//TODO: Perhaps add another small interface to remove duplication between here and IPlaceableSansOrientation
     }
 }

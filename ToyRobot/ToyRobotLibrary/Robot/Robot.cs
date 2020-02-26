@@ -11,6 +11,9 @@ namespace ToyRobotLibrary.Robot
         private readonly ITable _table;
         private Position _position;
         private Orientation? _orientation;
+
+        public bool IsPlaced { get; internal set; }
+
         /// <summary>
         /// The Robot which we're going to be playing with.
         /// </summary>
@@ -23,7 +26,7 @@ namespace ToyRobotLibrary.Robot
             _table = table ?? throw new ArgumentNullException(nameof(table), "Can't use a robot without a table instance.");
         }
 
-        public Orientation GetOrientation()
+        public Orientation? GetOrientation()
         {
             throw new NotImplementedException();
         }
@@ -35,7 +38,7 @@ namespace ToyRobotLibrary.Robot
 
         public void Move()
         {
-            if (_position == null || _orientation == null) return; //If the robot hasn't been placed, the Move command should do nothing.
+            if (!IsPlaced) return; //If the robot hasn't been placed, the Move command should do nothing.
 
             //TODO: This feels a little funny. Consider refactoring later.
             Position updatedPosition = new Position(_position);
@@ -67,12 +70,13 @@ namespace ToyRobotLibrary.Robot
             {
                 _position = position;
                 _orientation = orientation;
+                IsPlaced = true;
             }
         }
 
         public void Rotate(SpinDirection rotationDirection)
         {
-            if(_position != null)//I.e.if the robot has been placed on a table
+            if(IsPlaced)//I.e.if the robot has been placed on a table
             {
                 //Futures: If any more orientations are added e.g. North-East,
                 //"Enum.GetValues(typeof(Orientation)).Length" will give the number of options.

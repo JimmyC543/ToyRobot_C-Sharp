@@ -19,6 +19,6 @@ namespace ToyRobotLibrary.Robot
 		//It might make sense to add an IReportable interface...
 		//public IReport Report();
 		public Position GetPosition();
-		public Orientation GetOrientation();
+		public Orientation? GetOrientation();
 	}
 }

@@ -46,6 +46,7 @@ namespace ToyRobotLibraryTests.Robot
             Assert.Null(orientationField.GetValue(robot));
             Assert.Null(positionField.GetValue(robot));
             Assert.NotNull(tableField.GetValue(robot));
+            Assert.False(robot.IsPlaced);
         }
 
         [Fact]
@@ -88,6 +89,7 @@ namespace ToyRobotLibraryTests.Robot
             //Assert
             Assert.Equal(positionValue, placementPosition);
             Assert.Equal(orientationValue, (Orientation)orientationVal);
+            Assert.True(robot.IsPlaced);
         }
 
         [Theory]
@@ -112,6 +114,7 @@ namespace ToyRobotLibraryTests.Robot
             //Assert
             Assert.Null(positionValue);
             Assert.Null(orientationValue);
+            Assert.False(robot.IsPlaced);
         }
 
         [Theory]
@@ -135,6 +138,7 @@ namespace ToyRobotLibraryTests.Robot
             //Assert
             Assert.Null(positionValue);
             Assert.Null(orientationValue);
+            Assert.False(robot.IsPlaced);
         }
         #endregion
 
@@ -156,9 +160,11 @@ namespace ToyRobotLibraryTests.Robot
             IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
             var positionField = robot.GetType().GetField("_position", BindingFlags.NonPublic | BindingFlags.Instance);
             var orientationField = robot.GetType().GetField("_orientation", BindingFlags.NonPublic | BindingFlags.Instance);
+            var isPlacedProperty = robot.GetType().GetProperty("IsPlaced", BindingFlags.Public | BindingFlags.Instance);
 
             positionField.SetValue(robot, new Position { x = 0, y = 0 });
             orientationField.SetValue(robot, (Orientation)startingOrientation);
+            isPlacedProperty.SetValue(robot, true);
 
             //Act
             robot.Rotate((SpinDirection)spin);
@@ -199,9 +205,11 @@ namespace ToyRobotLibraryTests.Robot
             IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
             var positionField = robot.GetType().GetField("_position", BindingFlags.NonPublic | BindingFlags.Instance);
             var orientationField = robot.GetType().GetField("_orientation", BindingFlags.NonPublic | BindingFlags.Instance);
+            var isPlacedProperty = robot.GetType().GetProperty("IsPlaced",  BindingFlags.Public | BindingFlags.Instance);
 
             positionField.SetValue(robot, new Position { x = initX, y = initY });
             orientationField.SetValue(robot, (Orientation)orientation);
+            isPlacedProperty.SetValue(robot, true);
 
             //Act
             robot.Move();
@@ -261,5 +269,109 @@ namespace ToyRobotLibraryTests.Robot
             Assert.Null(positionField.GetValue(robot));
         }
         #endregion
+
+
+        #region GetPosition tests
+
+        [Theory]
+        [InlineData(1, 2)]
+        [InlineData(0, 4)]
+        [InlineData(3, 1)]
+        public void GetPosition_ShouldReturnPosition(int x, int y)
+        {
+            //Arrange
+            var mockTable = new Mock<RectangularTable>(5, 5);
+            IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
+            var positionField = robot.GetType().GetField("_position", BindingFlags.NonPublic | BindingFlags.Instance);
+            positionField.SetValue(robot, new Position(x, y));
+
+            //Act
+            var result = robot.GetPosition();
+
+            //Assert
+            Assert.IsType<Position>(result);
+            Assert.Equal(x, result.x);
+            Assert.Equal(y, result.y);
+        }
+
+        [Fact]
+        public void GetPosition_ShouldReturnNullIfNotPlaced()
+        {
+            //Arrange
+            var mockTable = new Mock<RectangularTable>(5, 5);
+            IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
+
+            //Act
+            var result = robot.GetPosition();
+
+            //Assert
+            Assert.Null(result);
+        }
+
+        #endregion
+
+        #region GetOrientation tests
+        [Theory]
+        [InlineData(Orientation.North)]
+        [InlineData(Orientation.East)]
+        [InlineData(Orientation.South)]
+        [InlineData(Orientation.West)]
+        public void GetOrientation_ShouldReturnOrientation(Orientation orientation)
+        {
+            //Arrange
+            var mockTable = new Mock<RectangularTable>(5, 5);
+            IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
+            var orientationField = robot.GetType().GetField("_orientation", BindingFlags.NonPublic | BindingFlags.Instance);
+            orientationField.SetValue(robot, orientation);
+
+            //Act
+            var result = robot.GetOrientation();
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<Orientation>(result);
+            Assert.Equal(orientation, result);
+        }
+
+        [Fact]
+        public void GetOrientation_ShouldReturnNullIfNotPlaced()
+        {
+            //Arrange
+            var mockTable = new Mock<RectangularTable>(5, 5);
+            IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
+
+            //Act
+            var result = robot.GetOrientation();
+
+            //Assert
+            Assert.Null(result);
+        }
+
+        #endregion
+
+        //#region Report tests
+
+        //[Fact]
+        //public void Report_ShouldDoNothing_UntilRobotIsPlaced()
+        //{
+        //    //Arrange
+        //    var mockTable = new Mock<RectangularTable>(5, 5);
+        //    IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
+        //    var positionField = robot.GetType().GetField("_position", BindingFlags.NonPublic | BindingFlags.Instance);
+        //    var orientationField = robot.GetType().GetField("_orientation", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        //    //Act
+        //    robot.Report();
+
+        //    //Assert
+        //    Assert.Null(orientationField.GetValue(robot));
+        //    Assert.Null(positionField.GetValue(robot));
+
+        //}
+
+        ////[Theory]
+        ////[1, 2, 0]
+        ////Report_Should
+        //#endregion
     }
 }
