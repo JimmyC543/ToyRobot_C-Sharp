@@ -23,6 +23,16 @@ namespace ToyRobotLibrary.Robot
             _table = table ?? throw new ArgumentNullException(nameof(table), "Can't use a robot without a table instance.");
         }
 
+        public Orientation GetOrientation()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Position GetPosition()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Move()
         {
             if (_position == null || _orientation == null) return; //If the robot hasn't been placed, the Move command should do nothing.
@@ -58,11 +68,6 @@ namespace ToyRobotLibrary.Robot
                 _position = position;
                 _orientation = orientation;
             }
-        }
-
-        public IReport Report()
-        {
-            throw new NotImplementedException();
         }
 
         public void Rotate(SpinDirection rotationDirection)

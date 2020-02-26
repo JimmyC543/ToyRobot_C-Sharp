@@ -17,6 +17,8 @@ namespace ToyRobotLibrary.Robot
 		//private bool ValidateMovement();
 
 		//It might make sense to add an IReportable interface...
-		public IReport Report();
+		//public IReport Report();
+		public Position GetPosition();
+		public Orientation GetOrientation();
 	}
 }
