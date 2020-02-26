@@ -32,6 +32,26 @@ namespace ToyRobotLibraryTests.Robot
         public void Constructor_ShouldThrowException_WhenPassedInvalidTable()
         {
             //Arrange
+            var mockTable = new Mock<RectangularTable>(1, 1);
+            IRobot robot;
+
+            //Act
+            robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
+            var positionField = robot.GetType().GetField("_position", BindingFlags.NonPublic | BindingFlags.Instance);
+            var orientationField = robot.GetType().GetField("_orientation", BindingFlags.NonPublic | BindingFlags.Instance);
+            var tableField = robot.GetType().GetField("_table", BindingFlags.NonPublic | BindingFlags.Instance);
+
+
+            //Assert
+            Assert.Null(orientationField.GetValue(robot));
+            Assert.Null(positionField.GetValue(robot));
+            Assert.NotNull(tableField.GetValue(robot));
+        }
+
+        [Fact]
+        public void Constructor_PositionAndOrientationShouldBeNull_WhenFirstCreated()
+        {
+            //Arrange
             IRobot robot;
 
             //Act
@@ -188,7 +208,12 @@ namespace ToyRobotLibraryTests.Robot
 
             //Assert
             Assert.Equal((Orientation)orientation, orientationField.GetValue(robot));
-            Assert.Equal(new Position { x = expectedX, y = expectedY }, positionField.GetValue(robot));
+
+            //TODO: Implement an overload of the Equals method to simplify these assertions.
+            Assert.NotNull(positionField.GetValue(robot));
+            Assert.IsType<Position>(positionField.GetValue(robot));
+            Assert.Equal(expectedX, (positionField.GetValue(robot) as Position).x);
+            Assert.Equal(expectedY, (positionField.GetValue(robot) as Position).y);
         }
 
         [Theory]
@@ -214,6 +239,23 @@ namespace ToyRobotLibraryTests.Robot
             //Assert
             Assert.Equal((Orientation)orientation, orientationField.GetValue(robot));
             Assert.Equal(initialPosition, positionField.GetValue(robot));
+        }
+
+        [Fact]
+        public void Move_ShouldDoNothing_IfNotYetPlaced()
+        {
+            //Arrange
+            var mockTable = new Mock<RectangularTable>(5, 5);
+            IRobot robot = new ToyRobotLibrary.Robot.Robot(mockTable.Object);
+            var positionField = robot.GetType().GetField("_position", BindingFlags.NonPublic | BindingFlags.Instance);
+            var orientationField = robot.GetType().GetField("_orientation", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            //Act
+            robot.Move();
+
+            //Assert
+            Assert.Null(orientationField.GetValue(robot));
+            Assert.Null(positionField.GetValue(robot));
         }
         #endregion
     }
