@@ -218,11 +218,11 @@ namespace ToyRobotLibraryTests.RobotOperator
         #region InterpretInstruction tests - PLACE
 
         [Theory]
-        [InlineData(0, 0, Orientation.NORTH)]
-        [InlineData(2, 3, Orientation.EAST)]
-        [InlineData(-1, -1, Orientation.EAST)]//Even invalid Positions work
-        [InlineData(-1, -1, (Orientation)7)]//Even invalid Orientations work
-        public void InterpretInstruction_Place_ShouldBeCalled_WithCorrectNumberOfArgs(int x, int y, Orientation orientation)
+        [InlineData("0", "0", Orientation.NORTH)]
+        [InlineData("2", "3", Orientation.EAST)]
+        [InlineData("-1", "-1", Orientation.EAST)]//Even invalid Positions work
+        [InlineData("-1", "-1", (Orientation)7)]//Even invalid Orientations work
+        public void InterpretInstruction_Place_ShouldBeCalled_WithCorrectNumberOfArgs(string x, string y, Orientation orientation)
         {
             //Arrange
             Instruction instruction = Instruction.PLACE;
