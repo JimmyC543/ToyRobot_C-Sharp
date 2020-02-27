@@ -16,7 +16,6 @@ namespace ToyRobotConsole
         {
             //Setup our DI
             var serviceProvider = new ServiceCollection()
-                //.AddLogging()
                 .AddSingleton<IToyRobotApp, ToyRobotConsoleApp>()
                 .AddSingleton<IRobotOperator, RobotOperator>()
                 .AddSingleton<IReader, ConsoleReader>()
@@ -25,14 +24,6 @@ namespace ToyRobotConsole
                 .AddScoped<ITable>(s => new RectangularTable(5, 5))
                 .BuildServiceProvider();
 
-            // Logging isn't necessary yet, but it's handy to have
-            //serviceProvider
-            //    .GetService<ILoggerFactory>()
-            //    .AddConsole(LogLevel.Debug);
-
-            //var logger = serviceProvider.GetService<ILoggerFactory>()
-            //    .CreateLogger<Program>();
-            //logger.LogDebug("Executing ToyRobot app");
             var app = serviceProvider.GetService<IToyRobotApp>();
             app.Execute();
         }

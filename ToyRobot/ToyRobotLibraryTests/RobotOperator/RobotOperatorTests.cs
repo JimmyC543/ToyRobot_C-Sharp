@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 using ToyRobotLibrary.Robot;
 using ToyRobotLibrary.RobotOperator;
-using ToyRobotLibrary.Table;
 using ToyRobotLibrary.Utilities;
 using Xunit;
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using ToyRobotConsole.Reader;
-using ToyRobotLibrary.Robot;
 using ToyRobotLibrary.RobotOperator;
 using ToyRobotLibrary.ToyRobotApp;
 using ToyRobotLibrary.Utilities;
