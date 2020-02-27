@@ -16,6 +16,10 @@ namespace ToyRobotLibrary.RobotOperator
 			_reporter = reporter ?? throw new ArgumentNullException(nameof(reporter), "Must provide or inject object implementing IReporter");
         }
 
+		//TODO: the "object[] args" parameter feels super gross and wrong. Needs to be changed at some point.
+		//Perhaps declaring some sort of IInstructionArguments (generic?) would make more sense and simplify
+		//the code in this method.
+		//REFACTOR: It works for now, though, so I'll (hopefully) have time to come back to this.
 		public void InterpretInstruction(Instruction instruction, object[] args)
 		{
 			switch (instruction)
