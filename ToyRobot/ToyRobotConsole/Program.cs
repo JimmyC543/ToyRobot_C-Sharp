@@ -18,6 +18,7 @@ namespace ToyRobotConsole
                 //.AddLogging()
                 .AddSingleton<IToyRobotApp, ToyRobotConsoleApp>()
                 .AddSingleton<IRobotOperator, RobotOperator>()
+                .AddSingleton<IReporter, ConsoleReporter>()
                 .AddScoped<IRobot, Robot>()
                 .AddScoped<ITable, RectangularTable>()
                 .BuildServiceProvider();
