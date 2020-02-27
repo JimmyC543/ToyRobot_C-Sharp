@@ -12,7 +12,7 @@ using Xunit;
 
 namespace ToyRobotConsoleTests.ToyRobotConsoleApp
 {
-    public class ToyRobotConsoleAppTests
+    public class ToyRobotConsoleTests
     {
         #region Constructor tests
         [Fact]
@@ -24,7 +24,7 @@ namespace ToyRobotConsoleTests.ToyRobotConsoleApp
             Mock<IReporter> reporter = new Mock<IReporter>();
 
             //Act
-            var app = new ToyRobotConsole.ToyRobotConsoleApp(robotOperator.Object, reader.Object, reporter.Object);
+            var app = new ToyRobotConsole.ToyRobotConsoleApp(robotOperator.Object, reader.Object);
 
             //Assert
             Assert.NotNull(app);
@@ -41,7 +41,7 @@ namespace ToyRobotConsoleTests.ToyRobotConsoleApp
             IToyRobotApp app;
             
             //Act
-            Exception ex = Record.Exception(() => app = new ToyRobotConsole.ToyRobotConsoleApp(robotOperator: null, reader.Object, reporter.Object));
+            Exception ex = Record.Exception(() => app = new ToyRobotConsole.ToyRobotConsoleApp(robotOperator: null, reader.Object));
 
             //Assert
             Assert.IsType<ArgumentNullException>(ex);
@@ -55,24 +55,36 @@ namespace ToyRobotConsoleTests.ToyRobotConsoleApp
             IToyRobotApp app;
             
             //Act
-            Exception ex = Record.Exception(() => app = new ToyRobotConsole.ToyRobotConsoleApp(robotOperator.Object, reader: null, reporter.Object));
+            Exception ex = Record.Exception(() => app = new ToyRobotConsole.ToyRobotConsoleApp(robotOperator.Object, reader: null));
 
             //Assert
             Assert.IsType<ArgumentNullException>(ex);
         }
-        [Fact]
-        public void Constructor_ShouldThrowException_WhenPassedNoReporter()
+        #endregion
+
+
+        #region Execute tests
+
+        [Theory]
+        [InlineData("Move")]
+        public void Execute_ReadsInstructions_PassesToRobotOperator_WhenValid(params string[] inputs)
         {
             //Arrange
+            IEnumerable<string> inputSequence = inputs.AsEnumerable();
             Mock<IRobotOperator> robotOperator = new Mock<IRobotOperator>();
-            Mock<IReader> reader = new Mock<IReader>();
-            IToyRobotApp app;
-            
+            var reader = new Mock<IReader>();
+            var succession = reader.SetupSequence(r => r.ReadInstruction());
+            foreach (var instruction in inputs)
+            {
+                succession = succession.Returns(instruction);
+            }
+            var app = new ToyRobotConsole.ToyRobotConsoleApp(robotOperator.Object, reader.Object);
+
             //Act
-            Exception ex = Record.Exception(() => app = new ToyRobotConsole.ToyRobotConsoleApp(robotOperator.Object, reader.Object, reporter: null));
+            app.Execute();
 
             //Assert
-            Assert.IsType<ArgumentNullException>(ex);
+            robotOperator.Verify(ro => ro.InterpretInstruction(It.IsAny<Instruction>(), null), Times.Exactly(inputs.Length));
         }
         #endregion
     }

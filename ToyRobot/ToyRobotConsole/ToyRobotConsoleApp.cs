@@ -17,13 +17,11 @@ namespace ToyRobotConsole
 	{
 		private readonly IRobotOperator _robotOperator;
 		private readonly IReader _reader;
-		private readonly IReporter _reporter;
 
-		public ToyRobotConsoleApp(IRobotOperator robotOperator, IReader reader, IReporter reporter)
+		public ToyRobotConsoleApp(IRobotOperator robotOperator, IReader reader)
 		{
 			_robotOperator = robotOperator ?? throw new ArgumentNullException(nameof(robotOperator));
 			_reader = reader ?? throw new ArgumentNullException(nameof(reader));
-			_reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
 		}
 
 		public void Execute()
