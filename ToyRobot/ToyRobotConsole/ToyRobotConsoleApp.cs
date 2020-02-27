@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ToyRobotConsole.Reader;
 using ToyRobotLibrary.Robot;
 using ToyRobotLibrary.RobotOperator;
 using ToyRobotLibrary.ToyRobotApp;
@@ -15,11 +16,13 @@ namespace ToyRobotConsole
 	public class ToyRobotConsoleApp : IToyRobotApp
 	{
 		private readonly IRobot _robot;
+		private readonly IReader _reader;
 		private readonly IReporter _reporter;
 
-		public ToyRobotConsoleApp(IRobot robot, IReporter reporter)
+		public ToyRobotConsoleApp(IRobot robot, IReader reader, IReporter reporter)
 		{
 			_robot = robot ?? throw new ArgumentNullException(nameof(robot));
+			_reader = reader ?? throw new ArgumentNullException(nameof(reader));
 			_reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
 		}
 
@@ -30,7 +33,7 @@ namespace ToyRobotConsole
 			while (true)
 			{
 				//Let's start with dealing only through the console, then generalise
-				var textInput = Console.ReadLine();
+				var textInput = _reader.ReadInstruction();
 				var distinctWords = textInput.Trim().Split(' ', ',');
 				var maybeInstruction = distinctWords[0];
 				IEnumerable<object> args = distinctWords.Length > 1 ? distinctWords.Skip(1) : null;

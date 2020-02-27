@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using ToyRobotConsole.Reader;
 using ToyRobotConsole.Reporter;
 using ToyRobotLibrary.Robot;
 using ToyRobotLibrary.RobotOperator;
@@ -18,6 +19,7 @@ namespace ToyRobotConsole
                 //.AddLogging()
                 .AddSingleton<IToyRobotApp, ToyRobotConsoleApp>()
                 .AddSingleton<IRobotOperator, RobotOperator>()
+                .AddSingleton<IReader, ConsoleReader>()
                 .AddSingleton<IReporter, ConsoleReporter>()
                 .AddScoped<IRobot, Robot>()
                 .AddScoped<ITable>(s => new RectangularTable(5, 5))
