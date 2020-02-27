@@ -20,7 +20,7 @@ namespace ToyRobotConsole
                 .AddSingleton<IRobotOperator, RobotOperator>()
                 .AddSingleton<IReporter, ConsoleReporter>()
                 .AddScoped<IRobot, Robot>()
-                .AddScoped<ITable, RectangularTable>()
+                .AddScoped<ITable>(s => new RectangularTable(5, 5))
                 .BuildServiceProvider();
 
             // Logging isn't necessary yet, but it's handy to have

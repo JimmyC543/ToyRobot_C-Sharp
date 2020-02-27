@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ToyRobotLibrary.Robot;
+using ToyRobotLibrary.RobotOperator;
 using ToyRobotLibrary.ToyRobotApp;
 using ToyRobotLibrary.Utilities;
 
@@ -23,7 +25,30 @@ namespace ToyRobotConsole
 
 		public void Execute()
 		{
-			throw new NotImplementedException();
+			IRobotOperator robotOperator = new RobotOperator(_robot, _reporter);
+
+			while (true)
+			{
+				//Let's start with dealing only through the console, then generalise
+				var textInput = Console.ReadLine();
+				var distinctWords = textInput.Trim().Split(' ', ',');
+				var maybeInstruction = distinctWords[0];
+				IEnumerable<object> args = distinctWords.Length > 1 ? distinctWords.Skip(1) : null;
+
+				//TODO AFTER CRICKET: RE-CODE THIS PROPERLY!
+
+				//Enum.TryParse will not only accept strings, but the underlying enum values.
+				//Since we don't want to parse e.g. "0" as "PLACE", check that the text matches one of the Instruction enum Names
+				//as well as trying to parse it.
+				bool isRecognisedInstruction = Enum.TryParse<Instruction>(maybeInstruction.ToUpper(), out Instruction instruction)
+					&& Enum.GetNames(typeof(Instruction)).Contains(maybeInstruction.ToUpper());
+				//Instruction instruction = Instruction.valueOf(inputSource.next().toLowerCase());
+
+				if (isRecognisedInstruction)
+				{
+					robotOperator.InterpretInstruction(instruction, args?.ToArray());
+				}
+			}
 		}
 	}
 }

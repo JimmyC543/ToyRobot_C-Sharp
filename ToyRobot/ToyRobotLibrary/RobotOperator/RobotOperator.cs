@@ -25,17 +25,19 @@ namespace ToyRobotLibrary.RobotOperator
 			switch (instruction)
 			{
 				case Instruction.PLACE:
+
 					if (args == null)
 						throw new ArgumentNullException(nameof(args), "Place command requires 3 arguments.");
 					if (args.Length != 3)
 						throw new ArgumentException($"Expected 3 arguments; instead received {args.Length}", nameof(args));
-					if (!(args[0] is int) || !(args[1] is int))
-						throw new ArgumentException($"Expected integers for arguments 1 and 2.");
-					if (!(args[2] is string))
+
+					if (!int.TryParse(args[0] as string, out var xArg) || !int.TryParse(args[1] as string, out var yArg))
+						throw new ArgumentException($"Invalid position arguments.");
+					if ((args[2] as string) == null)
 						throw new ArgumentException($"Expected a string for argument 3.");
 
 					//TODO: I'm not a fan of seing the "new" keyword like this. Consider creating a PositionFactory to create positions (or IPositions?) for us
-					_robot.Place(new Position((int)args[0], (int)args[1]), Enum.Parse<Orientation>((string)args[2]));
+					_robot.Place(new Position(xArg, yArg), Enum.Parse<Orientation>((string)args[2], ignoreCase: true));
 					break;
 				case Instruction.MOVE:
 					if (_robot.IsPlaced)
