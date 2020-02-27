@@ -15,21 +15,19 @@ namespace ToyRobotConsole
 	/// </summary>
 	public class ToyRobotConsoleApp : IToyRobotApp
 	{
-		private readonly IRobot _robot;
+		private readonly IRobotOperator _robotOperator;
 		private readonly IReader _reader;
 		private readonly IReporter _reporter;
 
-		public ToyRobotConsoleApp(IRobot robot, IReader reader, IReporter reporter)
+		public ToyRobotConsoleApp(IRobotOperator robotOperator, IReader reader, IReporter reporter)
 		{
-			_robot = robot ?? throw new ArgumentNullException(nameof(robot));
+			_robotOperator = robotOperator ?? throw new ArgumentNullException(nameof(robotOperator));
 			_reader = reader ?? throw new ArgumentNullException(nameof(reader));
 			_reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
 		}
 
 		public void Execute()
 		{
-			IRobotOperator robotOperator = new RobotOperator(_robot, _reporter);
-
 			while (true)
 			{
 				var textInput = _reader.ReadInstruction();
@@ -47,7 +45,7 @@ namespace ToyRobotConsole
 				{
 					//It's not clear what should happen in the event of an invalid instruction or argument
 					//I'm going to let the app crash
-					robotOperator.InterpretInstruction(instruction, args?.ToArray());
+					_robotOperator.InterpretInstruction(instruction, args?.ToArray());
 				}
 			}
 		}
