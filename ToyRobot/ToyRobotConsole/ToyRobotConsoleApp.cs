@@ -32,23 +32,21 @@ namespace ToyRobotConsole
 
 			while (true)
 			{
-				//Let's start with dealing only through the console, then generalise
 				var textInput = _reader.ReadInstruction();
 				var distinctWords = textInput.Trim().Split(' ', ',');
 				var maybeInstruction = distinctWords[0];
 				IEnumerable<object> args = distinctWords.Length > 1 ? distinctWords.Skip(1) : null;
 
-				//TODO AFTER CRICKET: RE-CODE THIS PROPERLY!
-
 				//Enum.TryParse will not only accept strings, but the underlying enum values.
 				//Since we don't want to parse e.g. "0" as "PLACE", check that the text matches one of the Instruction enum Names
 				//as well as trying to parse it.
-				bool isRecognisedInstruction = Enum.TryParse<Instruction>(maybeInstruction.ToUpper(), out Instruction instruction)
+				bool isRecognisedInstruction = Enum.TryParse(maybeInstruction, ignoreCase: true, out Instruction instruction)
 					&& Enum.GetNames(typeof(Instruction)).Contains(maybeInstruction.ToUpper());
-				//Instruction instruction = Instruction.valueOf(inputSource.next().toLowerCase());
 
 				if (isRecognisedInstruction)
 				{
+					//It's not clear what should happen in the event of an invalid instruction or argument
+					//I'm going to let the app crash
 					robotOperator.InterpretInstruction(instruction, args?.ToArray());
 				}
 			}
