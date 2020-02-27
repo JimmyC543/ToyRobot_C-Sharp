@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using ToyRobotConsole.Reader;
 using ToyRobotLibrary.Robot;
@@ -67,12 +68,17 @@ namespace ToyRobotConsoleTests.ToyRobotConsoleApp
 
         [Theory]
         [InlineData("Move")]
+        [InlineData("Left", "Right")]
+        [InlineData("Place 1,2,East", "Move", "Right", "Report")]
+        [InlineData("PLACE 0,0,NORTH", "Move", "Report")]
         public void Execute_ReadsInstructions_PassesToRobotOperator_WhenValid(params string[] inputs)
         {
             //Arrange
             IEnumerable<string> inputSequence = inputs.AsEnumerable();
             Mock<IRobotOperator> robotOperator = new Mock<IRobotOperator>();
             var reader = new Mock<IReader>();
+
+            //Setup the mock response of "ReadInstruction": each time it's called, iterate through the inputs to mimic a set of user instructions.
             var succession = reader.SetupSequence(r => r.ReadInstruction());
             foreach (var instruction in inputs)
             {
@@ -80,11 +86,17 @@ namespace ToyRobotConsoleTests.ToyRobotConsoleApp
             }
             var app = new ToyRobotConsole.ToyRobotConsoleApp(robotOperator.Object, reader.Object);
 
+            //Because Execute runs an infine loop, I'm testing on the logic inside each loop.
+            var method = app.GetType().GetMethod("ObeyNextInstruction", BindingFlags.NonPublic | BindingFlags.Instance);
+
             //Act
-            app.Execute();
+            for (var i = 0; i < inputs.Length; i++)
+            {
+                method.Invoke(app, null);
+            }
 
             //Assert
-            robotOperator.Verify(ro => ro.InterpretInstruction(It.IsAny<Instruction>(), null), Times.Exactly(inputs.Length));
+            robotOperator.Verify(ro => ro.InterpretInstruction(It.IsAny<Instruction>(), It.IsAny<string[]>()), Times.Exactly(inputs.Length));
         }
         #endregion
     }

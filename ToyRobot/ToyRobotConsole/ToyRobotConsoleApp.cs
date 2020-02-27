@@ -44,6 +44,22 @@ namespace ToyRobotConsole
 				&& Enum.GetNames(typeof(Instruction)).Contains(maybeInstruction.ToUpper());
 		}
 
+
+		/// <summary>
+		/// I've stripped out the logic from the main loop into it's own function to make testing slightly easier.
+		/// </summary>
+		private void ObeyNextInstruction()
+		{
+			bool isRecognisedInstruction = TryParseInput(out Instruction instruction, out object[] args);
+
+			if (isRecognisedInstruction)
+			{
+				//It's not clear what should happen in the event of an invalid instruction or argument
+				//I'm going to let the app crash
+				_robotOperator.InterpretInstruction(instruction, args);
+			}
+		}
+
 		/// <summary>
 		/// Runs an infinite loop, listening for user input and acting accordingly (if valid).
 		/// </summary>
@@ -51,14 +67,7 @@ namespace ToyRobotConsole
 		{
 			while (true)
 			{
-				bool isRecognisedInstruction = TryParseInput(out Instruction instruction, out object[] args);
-
-				if (isRecognisedInstruction)
-				{
-					//It's not clear what should happen in the event of an invalid instruction or argument
-					//I'm going to let the app crash
-					_robotOperator.InterpretInstruction(instruction, args);
-				}
+				ObeyNextInstruction();
 			}
 		}
 	}
