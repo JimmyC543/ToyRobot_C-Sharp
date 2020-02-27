@@ -5,3 +5,5 @@ ToyRobot/ToyRobotLibrary/bin/*
 ToyRobot/ToyRobotLibraryTests/bin/*
 ToyRobot/ToyRobotConsole/bin/*
 ToyRobot/ToyRobotConsole/obj/*
+ToyRobot/ToyRobotConsoleTests/bin/*
+ToyRobot/ToyRobotConsoleTests/obj/*
