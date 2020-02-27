@@ -9,7 +9,7 @@ namespace ToyRobotConsole.Reporter
     {
         public void Report(Position position, Orientation orientation)
         {
-            Console.WriteLine($"{position.x}, {position.y}, {orientation}");
+            Console.WriteLine($"{position.x},{position.y},{orientation}");
         }
     }
 }

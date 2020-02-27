@@ -9,7 +9,7 @@ namespace ToyRobotLibrary.Utilities
 	/// </summary>
 	public enum SpinDirection
 	{
-		Left = -1,	//I.e. Anti-clockwise (looking down)
-		Right = 1	//I.e. Clockwise (looking down)
+		LEFT = -1,	//I.e. Anti-clockwise (looking down)
+		RIGHT = 1	//I.e. Clockwise (looking down)
 	}
 }

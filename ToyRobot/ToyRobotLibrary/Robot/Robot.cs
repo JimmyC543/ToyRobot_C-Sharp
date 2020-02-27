@@ -45,16 +45,16 @@ namespace ToyRobotLibrary.Robot
 
             switch (_orientation)
             {
-                case Orientation.North:
+                case Orientation.NORTH:
                     updatedPosition.y++;
                     break;
-                case Orientation.East:
+                case Orientation.EAST:
                     updatedPosition.x++;
                     break;
-                case Orientation.South:
+                case Orientation.SOUTH:
                     updatedPosition.y--;
                     break;
-                case Orientation.West:
+                case Orientation.WEST:
                     updatedPosition.x--;
                     break;
             }

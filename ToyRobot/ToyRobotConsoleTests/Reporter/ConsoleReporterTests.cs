@@ -13,9 +13,9 @@ namespace ToyRobotConsoleTests.Reporter
     {
 
         [Theory]
-        [InlineData(0, 1, Orientation.North, "0,1,NORTH")]
-        [InlineData(0, 0, Orientation.West, "0,0,WEST")]
-        [InlineData(3, 3, Orientation.North, "3,3,NORTH")]
+        [InlineData(0, 1, Orientation.NORTH, "0,1,NORTH")]
+        [InlineData(0, 0, Orientation.WEST, "0,0,WEST")]
+        [InlineData(3, 3, Orientation.NORTH, "3,3,NORTH")]
         public void ConsoleReporter_ShouldFormatOutputCorrectly(int x, int y, Orientation orientation, string expected)
         {
             //Arrange

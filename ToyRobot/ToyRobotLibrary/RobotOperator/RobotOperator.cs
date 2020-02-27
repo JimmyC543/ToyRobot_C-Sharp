@@ -46,13 +46,13 @@ namespace ToyRobotLibrary.RobotOperator
 				case Instruction.LEFT:
 					if (_robot.IsPlaced)
 					{
-						_robot.Rotate(SpinDirection.Left);
+						_robot.Rotate(SpinDirection.LEFT);
 					}
 					break;
 				case Instruction.RIGHT:
 					if (_robot.IsPlaced)
 					{
-						_robot.Rotate(SpinDirection.Right);
+						_robot.Rotate(SpinDirection.RIGHT);
 					}
 					break;
 				case Instruction.REPORT:

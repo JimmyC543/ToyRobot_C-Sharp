@@ -115,7 +115,7 @@ namespace ToyRobotLibraryTests.RobotOperator
 
             //Assert
             mockRobot.Verify(robot => robot.IsPlaced, Times.Once());
-            mockRobot.Verify(robot => robot.Rotate(SpinDirection.Left), Times.Once());
+            mockRobot.Verify(robot => robot.Rotate(SpinDirection.LEFT), Times.Once());
 
         }
         [Fact]
@@ -153,7 +153,7 @@ namespace ToyRobotLibraryTests.RobotOperator
 
             //Assert
             mockRobot.Verify(robot => robot.IsPlaced, Times.Once());
-            mockRobot.Verify(robot => robot.Rotate(SpinDirection.Right), Times.Once());
+            mockRobot.Verify(robot => robot.Rotate(SpinDirection.RIGHT), Times.Once());
 
         }
         [Fact]
@@ -182,7 +182,7 @@ namespace ToyRobotLibraryTests.RobotOperator
             //Arrange
             Instruction instruction = Instruction.REPORT;
             Mock<IRobot> mockRobot = new Mock<IRobot>();
-            mockRobot.Setup(robot => robot.GetOrientation()).Returns(Orientation.North);
+            mockRobot.Setup(robot => robot.GetOrientation()).Returns(Orientation.NORTH);
             mockRobot.Setup(robot => robot.IsPlaced).Returns(true);
             Mock<IReporter> mockReporter = new Mock<IReporter>();
             IRobotOperator robotOperator = new ToyRobotLibrary.RobotOperator.RobotOperator(mockRobot.Object, mockReporter.Object);
@@ -210,7 +210,7 @@ namespace ToyRobotLibraryTests.RobotOperator
             robotOperator.InterpretInstruction(instruction);
 
             //Assert
-            mockRobot.Verify(robot => robot.Rotate(SpinDirection.Right), Times.Never());
+            mockRobot.Verify(robot => robot.Rotate(SpinDirection.RIGHT), Times.Never());
         }
         #endregion
 
@@ -218,9 +218,9 @@ namespace ToyRobotLibraryTests.RobotOperator
         #region InterpretInstruction tests - PLACE
 
         [Theory]
-        [InlineData(0, 0, Orientation.North)]
-        [InlineData(2, 3, Orientation.East)]
-        [InlineData(-1, -1, Orientation.East)]//Even invalid Positions work
+        [InlineData(0, 0, Orientation.NORTH)]
+        [InlineData(2, 3, Orientation.EAST)]
+        [InlineData(-1, -1, Orientation.EAST)]//Even invalid Positions work
         [InlineData(-1, -1, (Orientation)7)]//Even invalid Orientations work
         public void InterpretInstruction_Place_ShouldBeCalled_WithCorrectNumberOfArgs(int x, int y, Orientation orientation)
         {

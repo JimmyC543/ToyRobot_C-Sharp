@@ -9,9 +9,9 @@ namespace ToyRobotLibrary.Utilities
 	/// </summary>
 	public enum Orientation
 	{
-		North,  //0
-		East,   //1
-		South,  //2
-		West    //3
+		NORTH,  //0
+		EAST,   //1
+		SOUTH,  //2
+		WEST    //3
 	}
 }

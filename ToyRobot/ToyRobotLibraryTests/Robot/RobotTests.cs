@@ -314,10 +314,10 @@ namespace ToyRobotLibraryTests.Robot
 
         #region GetOrientation tests
         [Theory]
-        [InlineData(Orientation.North)]
-        [InlineData(Orientation.East)]
-        [InlineData(Orientation.South)]
-        [InlineData(Orientation.West)]
+        [InlineData(Orientation.NORTH)]
+        [InlineData(Orientation.EAST)]
+        [InlineData(Orientation.SOUTH)]
+        [InlineData(Orientation.WEST)]
         public void GetOrientation_ShouldReturnOrientation(Orientation orientation)
         {
             //Arrange
