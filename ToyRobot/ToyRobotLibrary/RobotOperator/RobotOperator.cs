@@ -28,6 +28,8 @@ namespace ToyRobotLibrary.RobotOperator
 
 					if (TryParsePlaceArguments(args, out int xArg, out int yArg, out Orientation orientationArg))
 					{
+						//TODO: Create IPositionFactory, or perhaps better, output a IVector directionalPlacement from the above
+						//TryParsePlaceArguments, which can contain Position and Orientation data for us.
 						_robot.Place(new Position(xArg, yArg), orientationArg);
 					}
 					break;
