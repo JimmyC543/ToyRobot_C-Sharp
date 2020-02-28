@@ -26,18 +26,10 @@ namespace ToyRobotLibrary.RobotOperator
 			{
 				case Instruction.PLACE:
 
-					if (args == null)
-						throw new ArgumentNullException(nameof(args), "Place command requires 3 arguments.");
-					if (args.Length != 3)
-						throw new ArgumentException($"Expected 3 arguments; instead received {args.Length}", nameof(args));
-
-					if (!int.TryParse(args[0] as string, out var xArg) || !int.TryParse(args[1] as string, out var yArg))
-						throw new ArgumentException($"Invalid position arguments.");
-					if ((args[2] as string) == null)
-						throw new ArgumentException($"Expected a string for argument 3.");
-
-					//TODO: I'm not a fan of seing the "new" keyword like this. Consider creating a PositionFactory to create positions (or IPositions?) for us
-					_robot.Place(new Position(xArg, yArg), Enum.Parse<Orientation>((string)args[2], ignoreCase: true));
+					if (TryParsePlaceArguments(args, out int xArg, out int yArg, out Orientation orientationArg))
+					{
+						_robot.Place(new Position(xArg, yArg), orientationArg);
+					}
 					break;
 				case Instruction.MOVE:
 					if (_robot.IsPlaced)
@@ -67,5 +59,33 @@ namespace ToyRobotLibrary.RobotOperator
 					return;
 			}
 		}
+
+
+		#region Argument validators
+
+		/// <summary>
+		/// Here we validate (and parse) the arguments passed in, in the case that the PLACE instruction was called.
+		/// </summary>
+		/// <param name="args">the arguments provided by the user</param>
+		/// <param name="xArg">the parsed value of the x ordinate</param>
+		/// <param name="yArg">the parsed value of the y ordinate</param>
+		/// <param name="orientationArg">the parsed value of the initial orientation</param>
+		/// <returns>True if the arguments are all valid and were able to be parsed.</returns>
+		private bool TryParsePlaceArguments(object[] args, out int xArg, out int yArg, out Orientation orientationArg)
+		{
+			if (args == null)
+				throw new ArgumentNullException(nameof(args), "Place command requires 3 arguments.");
+			if (args.Length != 3)
+				throw new ArgumentException($"Expected 3 arguments; instead received {args.Length}", nameof(args));
+
+			if (!int.TryParse(args[0] as string, out xArg) || !int.TryParse(args[1] as string, out yArg))
+				throw new ArgumentException($"Invalid position arguments.");
+
+			if (!Enum.TryParse<Orientation>(args[2] as string, ignoreCase: true, out orientationArg))
+				throw new ArgumentException($"Expected a string for argument 3.");
+
+			return true;
+		}
+		#endregion
 	}
 }
