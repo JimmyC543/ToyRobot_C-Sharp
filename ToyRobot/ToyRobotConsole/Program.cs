@@ -21,7 +21,7 @@ namespace ToyRobotConsole
                 .AddSingleton<IReader, ConsoleReader>()
                 .AddSingleton<IReporter, ConsoleReporter>()
                 .AddScoped<IRobot, Robot>()
-                .AddScoped<ITable>(s => new RectangularTable(5, 5))
+                .AddScoped<ITable>(s => new SquareTable(5))
                 .BuildServiceProvider();
 
             var app = serviceProvider.GetService<IToyRobotApp>();
